@@ -11,6 +11,7 @@
 
     <modules>
         <module>itext-pdf-quick-start</module>
+        <module>itext-pdf-with-font</module>
     </modules>
 
     <properties>
