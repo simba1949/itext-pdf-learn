@@ -6,22 +6,21 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileNotFoundException;
-
 /**
  * @author anthony
  * @version 2024/3/18 16:22
  */
 @Slf4j
 public class QuickStartApplication {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         // 获取 target/classes 资源文件路径
         String folderPath = QuickStartApplication.class.getClassLoader().getResource("").getPath();
+        String filePath = folderPath + "/快速入门生成的PDF文件.pdf";
 
         Document document = null;
         try {
             // 创建PDF输出流
-            PdfWriter pdfWriter = new PdfWriter(folderPath + "/快速入门生成的PDF文件.pdf");
+            PdfWriter pdfWriter = new PdfWriter(filePath);
             // 创建 pdf 文档对象
             PdfDocument pdfDocument = new PdfDocument(pdfWriter);
             // 创建文档对象
