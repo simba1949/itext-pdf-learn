@@ -15,7 +15,7 @@ public class QuickStartApplication {
     public static void main(String[] args) {
         // 获取 target/classes 资源文件路径
         String folderPath = QuickStartApplication.class.getClassLoader().getResource("").getPath();
-        String filePath = folderPath + "/快速入门生成的PDF文件.pdf";
+        String filePath = folderPath + "快速入门生成的PDF文件.pdf";
 
         Document document = null;
         try {
