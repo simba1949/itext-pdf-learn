@@ -12,6 +12,8 @@
     <modules>
         <module>itext-pdf-quick-start</module>
         <module>itext-pdf-with-font</module>
+        <module>itext-pdf-operation</module>
+        <module>html-convert-pdf</module>
     </modules>
 
     <properties>
