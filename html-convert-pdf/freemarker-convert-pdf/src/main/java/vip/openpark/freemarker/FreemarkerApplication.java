@@ -17,15 +17,19 @@ import java.util.*;
  */
 @Slf4j
 public class FreemarkerApplication {
+    /**
+     * freemarker 转换成 PDF，思路如下：
+     * freemarker 生成的 html 内容 ————> byteArrayOutputStream ————> byteArrayInputStream ————> File targetFile
+     */
     public static void main(String[] args) {
         // 获取当前模块的 classLoader
         ClassLoader classLoader = FreemarkerApplication.class.getClassLoader();
         // 获取当前模块下的 target/classes 资源文件路径
         String classesPath = Objects.requireNonNull(classLoader.getResource("")).getPath();
 
-        // freemarker 生成的 html 内容 ————> byteArrayOutputStream ————> byteArrayInputStream ————> File targetFile
         ByteArrayOutputStream byteArrayOutputStream = null;
         ByteArrayInputStream byteArrayInputStream = null;
+        OutputStream targetFileOutputStream = null;
         try {
             //------------以下是 freemarker 生成 html 内容，并将 html 内容转成输入输出流 -------------------
             // ByteArrayOutputStream 作为临时输出流，freemarker 生成的 html 内容写入到 ByteArrayOutputStream
@@ -39,6 +43,7 @@ public class FreemarkerApplication {
             //------------------------以下是生成PDF---------------------------------------
             // 目标文件
             File targetFile = new File(classesPath + "StaticHtml2Pdf.pdf");
+            targetFileOutputStream = Files.newOutputStream(targetFile.toPath());
             // 字体配置
             FontProvider fontProvider = new FontProvider();
             fontProvider.addFont("STSong-Light", "UniGB-UCS2-H");
@@ -46,10 +51,17 @@ public class FreemarkerApplication {
             ConverterProperties converterProperties = new ConverterProperties();
             converterProperties.setFontProvider(fontProvider);
             // 将 html 转换成 PDF
-            HtmlConverter.convertToPdf(byteArrayInputStream, Files.newOutputStream(targetFile.toPath()), converterProperties);
+            HtmlConverter.convertToPdf(byteArrayInputStream, targetFileOutputStream, converterProperties);
         } catch (IOException e) {
             log.info("目标文件路径转换成输出流异常", e);
         } finally {
+            if (targetFileOutputStream != null) {
+                try {
+                    targetFileOutputStream.close();
+                } catch (IOException e) {
+                    log.error("生成PDF文件的输出流关闭异常", e);
+                }
+            }
             if (byteArrayInputStream != null) {
                 try {
                     byteArrayInputStream.close();
